@@ -1,0 +1,671 @@
+Sub 第七版()
+
+
+
+'
+' 第七版 宏
+''
+'精简版，范围for
+
+   Dim StrFind1 As String
+   Dim StrFind2 As String
+   Dim StrFind3 As String
+  
+   Dim StrID1 As String
+   Dim StrID2 As String
+   Dim StrID3 As String
+ 
+   Dim rng As Range
+   Dim rng1 As Range
+ 
+   Dim i As Long
+  
+   StrFind1 = "Reading"
+   StrFind2 = "Duty"
+   StrFind3 = "Fan"
+   StrFind4 = "PWM"
+   
+   Dim x As Long
+   Dim x1 As Long
+   Dim x2 As Long
+   Dim x3 As Long
+   Dim x4 As Long
+   x1 = 0
+   x2 = 0
+   x3 = 0
+   x4 = 0
+   
+   
+   
+'   Columns("A:A").Select
+'    Selection.AutoFilter
+'    ActiveSheet.Range("$A$1:$A$871745").AutoFilter Field:=1, Criteria1:= _
+'        "CloseID:0"
+'    Range("A1").Select
+'    Selection.End(xlDown).Select
+   
+'确定总行数范围
+'   x = Selection.Row
+'   Cells(x, 1).Select
+'   x1 = x
+'   x = 0
+   
+   
+
+    
+
+ Columns("A:A").Select
+    Selection.Replace What:="", Replacement:="11111", LookAt:=xlPart, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=False
+
+
+
+    Columns("A:A").Select
+    Selection.AutoFilter
+    ActiveSheet.Range("$A$1:$A$67335").AutoFilter Field:=1, Criteria1:= _
+        "=[12344", Operator:=xlOr, Criteria2:="=[DEBUG]..."
+    Cells.Select
+    Selection.ClearContents
+    Columns("A:A").Select
+    Selection.AutoFilter
+    Range("A1").Select
+    Selection.ClearContents
+
+    Sheets.Add After:=ActiveSheet
+    Sheets.Add After:=ActiveSheet
+    Sheets.Add After:=ActiveSheet
+    Sheets.Add After:=ActiveSheet
+'    Sheets.Add After:=ActiveSheet
+'    Sheets.Add After:=ActiveSheet
+'    生成表2-5
+
+
+    Sheets("Sheet2").Select
+    Sheets("Sheet2").Name = "close loop"
+    Sheets("Sheet3").Select
+    Sheets("Sheet3").Name = "fan"
+    Sheets("Sheet4").Select
+    Sheets("Sheet4").Name = "open loop"
+'
+' 开始整理数据
+  
+  x1 = 20
+'  x1要大于close loop个数，fan个数，open loop个数最大值
+  
+  
+For i = 0 To x1
+       
+     x = 0
+    
+     StrID1 = "CloseID:" & i
+     StrID2 = "Fan" & i
+     StrID3 = "OpenID:" & i
+   
+'Close循环
+      
+       Sheets("Sheet1").Select
+       ActiveSheet.Range("$A:$A").AutoFilter Field:=1, Criteria1:=StrID1
+       Range("A1").Select
+       Selection.End(xlDown).Select
+       Set rng = Selection
+    If rng <> "" Then
+        x = x + 1
+        Sheets("Sheet1").Select
+        x2 = x2 + 1
+'        close loop数量 计数
+'   StrFind1 = "Reading"
+'   StrFind2 = "Duty"
+'   StrFind3 = "Fan"
+'   StrFind4 = "PWM"
+        
+        
+        Cells.Find(What:=StrFind1, After:=ActiveCell, LookIn:=xlValues, LookAt:= _
+        xlPart, SearchOrder:=xlByRows, SearchDirection:=xlNext, MatchCase:=False _
+        , MatchByte:=False, SearchFormat:=False).Activate
+
+       Application.CutCopyMode = False
+       Selection.Copy
+       Sheets("close loop").Select
+      
+       Cells(1, 2 * i + 1).Select
+    
+       ActiveSheet.Paste
+       Sheets("Sheet1").Select
+
+       Selection.Offset(0, 1).Select
+       Range(Selection, Selection.End(xlDown)).Select
+       Application.CutCopyMode = False
+       Selection.Copy
+       Sheets("close loop").Select
+       Cells(2, 2 * i + 1).Select
+       ActiveSheet.Paste
+       
+       
+       Sheets("Sheet1").Select
+        Cells.Find(What:=StrFind2, After:=ActiveCell, LookIn:=xlValues, LookAt:= _
+        xlPart, SearchOrder:=xlByRows, SearchDirection:=xlNext, MatchCase:=False _
+        , MatchByte:=False, SearchFormat:=False).Activate
+
+       Application.CutCopyMode = False
+       Selection.Copy
+       Sheets("close loop").Select
+    
+       Cells(1, 2 * i + 2).Select
+    
+       ActiveSheet.Paste
+       Sheets("Sheet1").Select
+
+       Selection.Offset(0, 1).Select
+       Range(Selection, Selection.End(xlDown)).Select
+       Application.CutCopyMode = False
+       Selection.Copy
+       Sheets("close loop").Select
+       Cells(2, 2 * i + 2).Select
+       ActiveSheet.Paste
+       
+             
+'    Else
+'
+'       Range("A1").Select
+    
+    End If
+
+       Set rng = Nothing
+     
+ 'Fan循环
+      
+       Sheets("Sheet1").Select
+
+       ActiveSheet.Range("$A$1:$A$100000").AutoFilter Field:=1, Criteria1:=StrID2
+        
+       Range("A1").Select
+       Selection.End(xlDown).Select
+       Set rng = Selection
+
+    If rng <> "" Then
+        x = x + 1
+        
+        x3 = x3 + 1
+        Sheets("Sheet1").Select
+        Range("A1").Select
+        '   StrFind1 = "Reading"
+        '   StrFind2 = "Duty"
+        '   StrFind3 = "Fan"
+        '   StrFind4 = "PWM"
+        Cells.Find(What:=StrFind3, After:=ActiveCell, LookIn:=xlValues, LookAt:= _
+        xlPart, SearchOrder:=xlByRows, SearchDirection:=xlNext, MatchCase:=False _
+        , MatchByte:=False, SearchFormat:=False).Activate
+
+       Application.CutCopyMode = False
+       Selection.Copy
+       Sheets("fan").Select
+      
+       Cells(1, i + 1).Select
+    
+       ActiveSheet.Paste
+       Sheets("Sheet1").Select
+
+'       Selection.Offset(0, 1).Select
+'       Range(Selection, Selection.End(xlDown)).Select
+'       Application.CutCopyMode = False
+'       Selection.Copy
+'       Sheets("Sheet6").Select
+'       Cells(2, 2 * i + 1).Select
+'       ActiveSheet.Paste
+       
+       
+        Sheets("Sheet1").Select
+        Range("A1").Select
+
+        Cells.Find(What:=StrFind4, After:=ActiveCell, LookIn:=xlValues, LookAt:= _
+        xlPart, SearchOrder:=xlByRows, SearchDirection:=xlNext, MatchCase:=False _
+        , MatchByte:=False, SearchFormat:=False).Activate
+
+'       Application.CutCopyMode = False
+'       Selection.Copy
+'       Sheets("Sheet6").Select
+'
+'       Cells(1, 2 * i + 2).Select
+'
+'       ActiveSheet.Paste
+'       Sheets("Sheet1").Select
+
+       Selection.Offset(0, 1).Select
+       Range(Selection, Selection.End(xlDown)).Select
+       Application.CutCopyMode = False
+       Selection.Copy
+       Sheets("fan").Select
+       Cells(2, i + 1).Select
+       ActiveSheet.Paste
+       
+             
+'    Else
+'
+'
+'       Range("A1").Select
+    
+    End If
+
+      Set rng = Nothing
+ 'Open循环
+      
+       Sheets("Sheet1").Select
+       
+       ActiveSheet.Range("$A$1:$A$100000").AutoFilter Field:=1, Criteria1:=StrID3
+       Range("A1").Select
+       Selection.End(xlDown).Select
+
+       Set rng = Selection
+
+    If rng <> "" Then
+        x = x + 1
+    
+        x4 = x4 + 1
+        Sheets("Sheet1").Select
+        Range("A1").Select
+        '   StrFind1 = "Reading"
+        '   StrFind2 = "Duty"
+        '   StrFind3 = "Fan"
+        '   StrFind4 = "PWM"
+        Cells.Find(What:=StrFind1, After:=ActiveCell, LookIn:=xlValues, LookAt:= _
+        xlPart, SearchOrder:=xlByRows, SearchDirection:=xlNext, MatchCase:=False _
+        , MatchByte:=False, SearchFormat:=False).Activate
+
+       Application.CutCopyMode = False
+       Selection.Copy
+       Sheets("open loop").Select
+      
+       Cells(1, 2 * i + 1).Select
+    
+       ActiveSheet.Paste
+       
+       Cells(1, 2 * i + 2).Select
+        ActiveSheet.Paste
+       ActiveCell.Replace What:="Reading", Replacement:="Duty", LookAt:=xlPart, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=False
+       
+       
+       
+       
+       Sheets("Sheet1").Select
+       Selection.Offset(0, 1).Select
+       Range(Selection, Selection.End(xlDown)).Select
+       Application.CutCopyMode = False
+       Selection.Copy
+       Sheets("open loop").Select
+       Cells(2, 2 * i + 1).Select
+       ActiveSheet.Paste
+       
+       
+        Sheets("Sheet1").Select
+        Cells.Find(What:=StrFind4, After:=ActiveCell, LookIn:=xlValues, LookAt:= _
+        xlPart, SearchOrder:=xlByRows, SearchDirection:=xlNext, MatchCase:=False _
+        , MatchByte:=False, SearchFormat:=False).Activate
+
+'       Application.CutCopyMode = False
+'       Selection.Copy
+'       Sheets("open loop").Select
+'
+'       Cells(1, 2 * i + 2).Select
+'
+'       ActiveSheet.Paste
+'       Sheets("Sheet1").Select
+
+       Selection.Offset(0, 1).Select
+       Range(Selection, Selection.End(xlDown)).Select
+       Application.CutCopyMode = False
+       Selection.Copy
+       Sheets("open loop").Select
+       Cells(2, 2 * i + 2).Select
+       ActiveSheet.Paste
+       
+             
+'    Else
+'       Range("A1").Select
+    
+    End If
+
+     Set rng = Nothing
+     
+    
+    If x = 0 Then
+    Exit For
+     End If
+    
+    
+     
+  Next
+ 
+ 
+ 
+ 
+' 开始制图
+    Sheets("Sheet1").Select
+    Range("A1").Select
+    
+    
+  Dim i1 As Long
+
+  i = 1
+  For i = 1 To x2
+     Sheets("close loop").Select
+     Cells(1, 2 * i - 1).Select
+     Union(Cells(1, 2 * i - 1), Cells(1, 2 * i)).Select
+    
+    If Cells(1, 2 * i - 1) <> "" Then
+    
+    Range(Selection, Selection.End(xlDown)).Select
+    ActiveWindow.ScrollColumn = 1
+    ActiveWindow.SmallScroll Down:=18 * i - 17
+    ActiveSheet.Shapes.AddChart2(227, xlLine).Select
+    Else
+      i1 = 2 * i - 1
+    End If
+    Next
+    
+         i = 1
+  Dim i2 As Long
+  
+  
+  For i = 1 To x3
+     Sheets("fan").Select
+     Cells(1, i).Select
+'     Union(Cells(1, 2 * i - 1), Cells(1, 2 * i)).Select
+    
+   If Cells(1, i) <> "" Then
+    
+    Range(Selection, Selection.End(xlDown)).Select
+    ActiveWindow.ScrollColumn = 1
+    ActiveWindow.SmallScroll Down:=18 * i - 17
+    ActiveSheet.Shapes.AddChart2(227, xlLine).Select
+   Else
+      i2 = i
+   End If
+   Next
+    
+    Dim i3 As Long
+      i = 1
+  
+  
+  For i = 1 To x4
+     Sheets("open loop").Select
+     Cells(1, 2 * i - 1).Select
+     Union(Cells(1, 2 * i - 1), Cells(1, 2 * i)).Select
+    If Cells(1, 2 * i - 1) <> "" Then
+     Range(Selection, Selection.End(xlDown)).Select
+     ActiveWindow.ScrollColumn = 1
+     ActiveWindow.SmallScroll Down:=18 * i - 17
+     ActiveSheet.Shapes.AddChart2(227, xlLine).Select
+    Else
+      i3 = 2 * i - 1
+    End If
+  Next
+
+'最大最小值
+
+
+
+'
+'   Dim StrFind1 As String
+'   Dim StrFind2 As String
+'   Dim StrFind3 As String
+'
+'   Dim StrID1 As String
+'   Dim StrID2 As String
+'   Dim StrID3 As String
+'
+'    Dim rng As Range
+'    Dim rng1 As Range
+
+'    Dim i As Long
+'    Dim i1 As Integer
+'    Dim i2 As Integer
+'    Dim i3 As Integer
+
+    i = 0
+    i1 = 0
+    i2 = 0
+    i3 = 0
+
+    Dim i4 As Integer
+    Dim i5 As Integer
+    Dim k As Integer
+       k = 1
+    Dim m As Integer
+       m = 1
+
+    StrFind1 = "Reading"
+    StrFind2 = "Duty"
+    StrFind3 = "Fan"
+    StrFind4 = "PWM"
+    
+    Dim arr As Variant
+    Dim brr As Variant
+   
+    Dim str1 As String
+    Dim str2 As String
+    Dim str3 As String
+       
+    Dim val As Integer
+    Dim val1 As Integer
+    Dim val2 As Integer
+       
+    Dim myRng As Range
+    Dim k1 As Integer, k2 As Integer
+    Dim MAX As Double, min As Double
+       
+     Sheets("close loop").Select
+'     Range("A1").Select
+'    Range(Selection, Selection.End(xlDown)).Select
+'    Dim arr
+    
+   
+
+'
+'    Range(Selection, Selection.End(xlDown))
+
+    Cells.Find(What:="CPU0_Temp*READING", After:=ActiveCell, LookIn:=xlValues, _
+        LookAt:=xlPart, SearchOrder:=xlByRows, SearchDirection:=xlNext, _
+        MatchCase:=False, MatchByte:=False, SearchFormat:=False).Activate
+       
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.Copy
+
+    Sheets("Sheet5").Select
+   
+    Range("A1").Select
+    ActiveSheet.Paste
+    Range("A1").Select
+'    Application.CutCopyMode = False
+'    Selection.ClearContents
+'    Range("A1").Select
+'    ActiveCell.FormulaR1C1 = "0"
+'   Range("A1").Select
+'
+   k = 1
+    arr = Range("A1:A100011")
+ For i = 2 To 100000
+     
+     If arr(i, 1) > arr(i + 10, 1) + 10 Then
+        Cells(k, 4) = i
+        
+         k = k + 1
+     End If
+ 
+ Next
+      i1 = k - 1
+'i1=第四列数据量
+'     k = 1
+  For k = 1 To i1 - 1
+     
+       If Cells(k, 4) > 0 Then
+       If k = 1 Then
+         Cells(m, 6) = Cells(k, 4)
+       Else
+         If Cells(k, 4) <> Cells(k - 1, 4) + 1 Then
+           If Cells(k + 10, 4) > 0 Then
+            m = m + 1
+           Cells(m, 6) = Cells(k, 4)
+         End If
+         End If
+         
+       End If
+    End If
+  Next
+      i2 = m
+'i2=第6列数据量,即区间数
+      m = 1
+     brr = Range("F1:F100")
+     i = brr(1, 1)
+     i = 0
+    
+'     k = 0
+'   For i = 1 To i2
+'       If brr(i, 1) > 0 Then
+'       k = k + 1
+'       Else
+'
+'       End If
+'   Next
+
+     
+     
+    
+   k = 1
+   m = 1
+  For m = 1 To i2
+       
+       val = brr(m, 1)
+       If val > 1500 Then
+       val1 = val - 1500
+       val2 = val - 300
+      
+      
+       str1 = "A" & val1
+       str2 = "A" & val2
+       
+'        Range("A1").Select
+'      Dim myRng As Range
+'      Dim k1 As Integer, k2 As Integer
+'      Dim max As Double, min As Double
+'      Set myRng = Range(str1, str2)
+      Set myRng = Range(Cells(val1, k), Cells(val2, k))
+'      myRng.Select
+      MAX = WorksheetFunction.MAX(myRng)
+      min = WorksheetFunction.min(myRng)
+      Cells(m, 8) = MAX
+      Cells(m, 9) = min
+      Cells(m, 10) = MAX - min
+      Cells(m, 11) = (MAX - min) / MAX
+    
+     
+     End If
+     
+  Next
+      m = 1
+      
+      
+      
+      k = 0
+'fan
+
+
+'   i2 = 8
+  Sheets("fan").Select
+  
+ For i = 1 To 100
+    If Cells(1, i) <> "" Then
+       k = k + 1
+    Else
+        Cells(1, i + 1).ClearContents
+  
+    End If
+ Next
+  i3 = k
+'i3 = fan数量
+  i4 = i2 + 1
+  i5 = i3
+  
+  If i5 < 16 Then
+    i5 = 16
+  End If
+  
+  
+ 
+ For k = 1 To i3
+      Cells(i4 * (k - 1) + 1, i5 + 2) = "max"
+      Cells(i4 * (k - 1) + 1, i5 + 3) = "min"
+      Cells(i4 * (k - 1) + 1, i5 + 4) = "max-min"
+      Cells(i4 * (k - 1) + 1, i5 + 5) = "oscillation"
+      
+      Cells(1, k).Select
+    
+      Selection.Copy
+      Cells(i4 * (k - 1) + 1, i5 + 1).Select
+   
+      ActiveSheet.Paste
+      
+' i2为区间数
+    For m = 1 To i2
+       
+       val = brr(m, 1)
+     If val > 1500 Then
+       val1 = val - 1500
+       val2 = val - 300
+      
+      
+'       str1 = "A" & val1
+'       str2 = "A" & val2
+       
+'        Range("A1").Select
+'      Dim myRng As Range
+'      Dim k1 As Integer, k2 As Integer
+'      Dim max As Double, min As Double
+'     Range("I7").Select
+'      Set myRng = Range(str1, str2)
+      Set myRng = Range(Cells(val1, k), Cells(val2, k))
+'      myRng.Select
+      MAX = WorksheetFunction.MAX(myRng)
+      min = WorksheetFunction.min(myRng)
+      
+      Cells(i4 * (k - 1) + 1 + m, i5 + 2) = MAX
+      Cells(i4 * (k - 1) + 1 + m, i5 + 3) = min
+      Cells(i4 * (k - 1) + 1 + m, i5 + 4) = MAX - min
+      Cells(i4 * (k - 1) + 1 + m, i5 + 5) = (MAX - min) / MAX
+    
+     
+     End If
+     
+    Next
+  Next
+    
+   
+    
+  Range("A1").Select
+    
+    
+'    Sheets("close loop").Select
+'    Rows("1:1").Select
+'    With ActiveWindow
+'        .SplitColumn = 0
+'        .SplitRow = 1
+'    End With
+'    ActiveWindow.FreezePanes = True
+'    Sheets("fan").Select
+'    Rows("1:1").Select
+'    With ActiveWindow
+'        .SplitColumn = 0
+'        .SplitRow = 1
+'    End With
+'    ActiveWindow.FreezePanes = True
+'    Sheets("open loop").Select
+'    Rows("1:1").Select
+'    With ActiveWindow
+'        .SplitColumn = 0
+'        .SplitRow = 1
+'    End With
+'    ActiveWindow.FreezePanes = True
+''
+End Sub
