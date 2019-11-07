@@ -1,0 +1,6 @@
+python "electric_car.py"
+
+pause
+del "%0"
+
+pause
