@@ -153,8 +153,14 @@ print(id(x))
 print(id("name"))
 print("浅拷贝，浅层互不干扰，深层为引用")
 y = x.copy()
+z=x
+print(x)
 print(y)
+print(z)
+print(id(x))
 print(id(y))
+print(id(z))
+print("_"*20)
 print(id("name"))
 print(id(x["name"]))
 print(id(y["name"]))
@@ -174,7 +180,6 @@ print(y)
 print(id(y))
 
 
-
 # key的值必须为常量，不能是非常量a,b,c,d
 x={'a': 1, 'b': 2, 'c': 3, 'd': ["e","f"]}
 print(id(x))
@@ -185,6 +190,7 @@ print(id('a'),id('b'),id('e'))
 y=x.copy()
 print(id(y))
 print(id('a'),id('b'),id('e'))
+
 
 import copy
 y=copy.deepcopy(x)

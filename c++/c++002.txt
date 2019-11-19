@@ -1,0 +1,78 @@
+#include "stdafx.h"
+#include<iostream>
+#include <string>
+#include <vector>
+#include <fstream>  //文件流库函数
+
+using namespace std;
+
+int main()
+{
+	ifstream infile("pre0.txt");
+	ofstream outfile("out0.1.txt", ios::app);
+	vector<double> s;
+	int i = 0;
+	double wv;
+	if (!infile.is_open())
+	{
+		cout << "未成功打开文件" << endl;
+	}
+	while (infile >> wv)
+	{
+		s.push_back(wv);
+	}
+	
+
+	//调试版vector
+	/*while (i < 292)
+	{
+		wv = 292 - i;
+		s.push_back(wv);
+
+		i++;
+	}
+	*/
+	
+	/* y=pow(p,b),b=5.337-0.048lat
+	a=a0*y
+	
+	*/
+	double y, p, b, lat, a,a0;
+	
+	cout << "请输入地面大气绝对湿度，单位g/m^3" << endl;
+	cout << "然后按Ctrl+'Z'+Enter结束循环" << endl;
+	double dam, WV, tg,sum=0, SUMWV;
+	while (cin >> dam)
+		WV = dam * 1000 / (2.994E-19); //一千米高度上每平方厘米的水分子数；
+
+									   //调试版WV=dam;
+	tg = WV;   //target
+
+	a0 = tg; lat = 29;
+	
+	for(auto &p:s)
+	{
+		b = 5.337 - 0.0481*lat;
+		y = pow(p , b);
+		a = a0*y;
+		p = a;
+		
+	}
+
+
+
+
+
+	for (int i = 0; i < 292; ++i)
+	{
+		outfile << s[i];//将容器内的数据输出来，数据量292个
+		outfile << endl;
+		sum += s[i];
+	}
+	SUMWV = sum*(2.994e-19)*(1e-5);
+	cout << "整层大气可降水量:" << SUMWV << "cm" << endl;
+	infile.close();
+	outfile.close();
+	system("pause");
+	return 0;
+}
